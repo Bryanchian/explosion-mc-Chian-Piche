@@ -25,7 +25,7 @@ test:
 test-pure:
 	$(PYTHON) -m venv .venv_pure
 	.venv_pure\Scripts\pip install pytest -q
-	.venv_pure\Scripts\pytest tests/test_dominio.py -v
+	.venv_pure\Scripts\python -m pytest tests/test_dominio.py -v
 	@echo "OK — el dominio pasa sin numpy ni matplotlib"
 
 clean:
