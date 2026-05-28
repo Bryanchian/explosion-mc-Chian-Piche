@@ -18,11 +18,11 @@ class Explosion:
         self._observadores = list(observadores or [])
 
     def _generar_angulo(self, rng: random.Random, config: ConfigExplosion) -> float:
-        # distribucion normal
+        
         if config.dist_angulo == "normal":
             return rng.gauss(config.angulo_media, config.angulo_sigma)
 
-        # distribucion circular
+
         if config.dist_angulo == "vonmises":
             mu = math.radians(config.angulo_media)
             return math.degrees(rng.vonmisesvariate(mu, config.angulo_kappa))
