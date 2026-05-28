@@ -2,6 +2,7 @@ import math
 import inspect
 import ast
 import textwrap
+import pytest
 
 from dominio.modelos import ConfigExplosion, Proyectil
 from dominio.puertos import PuertoObservador
@@ -25,3 +26,15 @@ def test_sin_if_en_fabrica():
     src = textwrap.dedent(inspect.getsource(FabricaLigero.crear))
     ifs = [n for n in ast.walk(ast.parse(src)) if isinstance(n, ast.If)]
     assert len(ifs) == 0
+    
+@pytest.fixture
+def config_minima():
+    return ConfigExplosion(n_proyectiles=20, v_min=10, v_max=20, semilla=7)
+
+from dominio.patrones.observador import MonitorEstadisticas
+
+@pytest.fixture
+def motor_euler():
+    monitor = MonitorEstadisticas()
+    motor = Explosion(FabricaLigero(), Euler(), [monitor])
+    return motor, monitor
