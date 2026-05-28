@@ -47,7 +47,10 @@ def test_alcance_vs_analitico(angulo_deg):
 
     R_teorico = v0 ** 2 * math.sin(2 * math.radians(angulo_deg)) / g
     assert abs(x_imp - R_teorico) / R_teorico < 0.01
-
+    
+#=====================================================================
+# Test de patron - estrategia
+#=====================================================================
 
 def test_verlet_conserva_mejor_energia_que_euler():
     """Verlet debe tener menor error de energía total que Euler en 500 pasos."""
@@ -117,3 +120,21 @@ def test_reproducibilidad_con_misma_semilla():
     _, r2 = Explosion(FabricaLigero(), Euler()).ejecutar(config)
     for a, b in zip(r1, r2):
         assert abs(a.alcance - b.alcance) < 1e-10
+
+
+#=====================================================================
+# Test de dominio - explosion
+#=====================================================================
+
+def test_trayectorias_empiezan_en_origen(config_minima):
+    motor = Explosion(FabricaLigero(), Euler())
+    trajs, _ = motor.ejecutar(config_minima)
+    for tray in trajs:
+        assert tray[0] == (0.0, 0.0)
+
+def test_reproducibilidad_con_misma_semilla():
+    config = ConfigExplosion(n_proyectiles=30, semilla=99)
+    _, r1 = Explosion(FabricaLigero(), Euler()).ejecutar(config)
+    _, r2 = Explosion(FabricaLigero(), Euler()).ejecutar(config)
+    for a, b in zip(r1, r2):
+        assert abs(a.alcance - b.alcance) < 1e-10   
